@@ -8,10 +8,13 @@ This repository is for development of the _swf-data-agent_.
 
 ## XRootD
 
-##
-
 _XRootD_ is a high-performance, scalable, and fault-tolerant data access framework widely used in scientific computing, especially in high-energy physics. An XRootD server provides remote access to files and datasets over the network using the XRootD protocol. It supports efficient data transfers, authentication, authorization, and can be configured as a standalone server or as part of a distributed cluster for load balancing and redundancy. It is the data transport mechanism used in the test bed, and is actuated
 by the _FTS_ system used for data distribution in Rucio.
 
 The XRootD service been installed on the host _pandaserver02.sdcc.bnl.gov_ in a standard type
 of a "standalone" configuration, meaning it's not a cluster.
+
+Configuration files are stored in the folder _/etc/xrootd/_. In this case, the file of interest is _xrootd-standalone.cfg_.
+In particular, it specified the partition which is to be made accessible via XRootD.
+
+
