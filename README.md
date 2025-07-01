@@ -12,9 +12,8 @@ _XRootD_ is a high-performance, scalable, and fault-tolerant data access framewo
 by the _FTS_ system used for data distribution in Rucio.
 
 The XRootD service been installed on the host _pandaserver02.sdcc.bnl.gov_ in a standard type
-of a "standalone" configuration, meaning it's not a cluster.
+of a "standalone" configuration, meaning it's not a cluster. More information is contained in the **README** file
+in the _xrootd_ folder.
 
-Configuration files are stored in the folder _/etc/xrootd/_. In this case, the file of interest is _xrootd-standalone.cfg_.
-In particular, it specified the partition which is to be made accessible via XRootD.
 
 
