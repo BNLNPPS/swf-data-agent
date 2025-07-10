@@ -21,6 +21,20 @@ The agent does not normally actuates the data transfer by itself. It instead
 relies on Rucio for that function, and Rucio in turn operates the **FTS** system
 to move data. The transport layer for the FTS is **XRootD**.
 
+## Rucio
+
+Useful information for setting up the components such as Rucio can be found in the
+[Startup Guide for NP PanDA & Rucio at BNL](https://docs.google.com/document/d/1zxtpDb44yNmd3qMW6CS7bXCtqZk-li2gPwIwnBfMNNI/edit?tab=t.0).
+
+### Setting up Rucio
+
+```bash
+source /cvmfs/eic.opensciencegrid.org/rucio-clients/alrb_setup.sh
+```
+There will be error/warning messages that can be ignored in most cases. Specifying
+a valid user ID is important, however -- there will be a prompt for that.
+
+
 ## XRootD
 
 _XRootD_ is a high-performance, scalable, and fault-tolerant data access framework widely used in scientific computing, especially in high-energy physics. An XRootD server provides remote access to files and datasets over the network using the XRootD protocol. It supports efficient data transfers, authentication, authorization, and can be configured as a standalone server or as part of a distributed cluster for load balancing and redundancy. It is the data transport mechanism used in the test bed, and is actuated
