@@ -2,9 +2,24 @@
 
 ## About
 
-This repository is for development of the _swf-data-agent_.
-* Purpose: The central data handling agent within the testbed.
-* Details: It will listen to the swf-daqsim-agent, manage Rucio STF subscriptions, create new run datasets, and send messages to the swf-processing-agent for run processing and to the swf-fastmon-agent for new STF availability. It will also have a 'watcher' role to identify and report stalls or anomalie
+This repository is for development of the _swf-data-agent_, which is 
+the central data handling agent within the _swf_ testbed. This is currently
+work in progress.
+
+Functionality:
+*  It receives the MQ messages from the _swf-daqsim-agent_ and takes actions
+according to the messages.
+* With respect to Rucio, it created new run datasets,
+and manages Rucio STF subscriptions in general.
+* It sends messages to the _swf-processing-agent_ for data processing and
+to the _swf-fastmon-agent_ to signal new STF availability.
+* It will eventually also have a 'watcher' role to identify and report stalls or anomalies.
+
+## Data Trasnport
+
+The agent does not normally actuates the data transfer by itself. It instead
+relies on Rucio for that function, and Rucio in turn operates the **FTS** system
+to move data. The transport layer for the FTS is **XRootD**.
 
 ## XRootD
 
