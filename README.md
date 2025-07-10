@@ -15,7 +15,7 @@ and manages Rucio STF subscriptions in general.
 to the _swf-fastmon-agent_ to signal new STF availability.
 * It will eventually also have a 'watcher' role to identify and report stalls or anomalies.
 
-## Data Trasnport
+## Data Transport
 
 The agent does not normally actuates the data transfer by itself. It instead
 relies on Rucio for that function, and Rucio in turn operates the **FTS** system
