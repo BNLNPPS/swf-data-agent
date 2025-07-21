@@ -49,6 +49,14 @@ E1_JLAB_DISK_1
 JLAB_DISK_1
 ```
 
+
+More examples:
+```bash
+rucio --help # a useful CLI help is available
+rucio add-dataset user.potekhin:test # add dataset
+rucio upload --rse BNL_PROD_DISK_1 --scope user.potekhin ./README.md # upload to a storage endpoint
+```
+
 ## XRootD
 
 _XRootD_ is a high-performance, scalable, and fault-tolerant data access framework widely used in scientific computing, especially in high-energy physics. An XRootD server provides remote access to files and datasets over the network using the XRootD protocol. It supports efficient data transfers, authentication, authorization, and can be configured as a standalone server or as part of a distributed cluster for load balancing and redundancy. It is the data transport mechanism used in the test bed, and is actuated
