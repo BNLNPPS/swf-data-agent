@@ -26,6 +26,13 @@ to move data. The transport layer for the FTS is **XRootD**.
 Useful information for setting up the components such as Rucio can be found in the
 [Startup Guide for NP PanDA & Rucio at BNL](https://docs.google.com/document/d/1zxtpDb44yNmd3qMW6CS7bXCtqZk-li2gPwIwnBfMNNI/edit?tab=t.0).
 
+Quick summary:
+* The user needs a grid certificate and the key, with which to run _voms-proxy-init_.
+* Access can be confirmed by using the command `rucio whoami`.
+* An example of a simple command listing Rucio items for a user: `rucio list-dids --filter 'type=all' user.potekhin:*`
+
+
+
 ### Setting up Rucio
 
 ```bash
