@@ -27,20 +27,27 @@ Useful information for setting up the components such as Rucio can be found in t
 [Startup Guide for NP PanDA & Rucio at BNL](https://docs.google.com/document/d/1zxtpDb44yNmd3qMW6CS7bXCtqZk-li2gPwIwnBfMNNI/edit?tab=t.0).
 
 Quick summary:
-* The user needs a grid certificate and the key, with which to run _voms-proxy-init_.
+* Set up is done using CVMFS (hence it must be mounted on the host)
+* Setting up: `source /cvmfs/eic.opensciencegrid.org/rucio-clients/alrb_setup.sh`
+* There will be error/warning messages during the setup that can be ignored in most cases.
+* Specifying a valid Rucio user ID is important, there will be a prompt for that.
+* The user needs a grid certificate and the key, with which to run `voms-proxy-init`.
 * Access can be confirmed by using the command `rucio whoami`.
+* `$RUCIO_ACCOUNT` contains the current user ID for Rucio.
 * An example of a simple command listing Rucio items for a user: `rucio list-dids --filter 'type=all' user.potekhin:*`
 
+Useful examples can be found on the official [Rucio documentation pages](https://rucio.github.io/documentation/user/using_the_client).
 
-
-### Setting up Rucio
-
+The example below lists the available RSEs:
 ```bash
-source /cvmfs/eic.opensciencegrid.org/rucio-clients/alrb_setup.sh
+$ rucio list-rses
+BNL_PROD_DISK_1
+BNL_TEST_TAPE
+DAQ_DISK_1
+E1_BNL_DISK_1
+E1_JLAB_DISK_1
+JLAB_DISK_1
 ```
-There will be error/warning messages that can be ignored in most cases. Specifying
-a valid user ID is important, however -- there will be a prompt for that.
-
 
 ## XRootD
 
