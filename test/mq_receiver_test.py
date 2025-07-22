@@ -19,37 +19,28 @@ verbose     = args.verbose
 if verbose: print(f'''*** Verbose mode is set to {verbose} ***''')
 
 # ---
-comms_path=''
+mq_comms_path=''
+
 
 try:
-    comms_path=os.environ['COMMS_PATH']
-    if verbose: print(f'''*** The comms_path is defined in the environment: {COMMS_PATHpath}, will be added to sys.path ***''')
-    sys.path.append(comms_path)
+    mq_comms_path = os.environ['MQ_COMMS_PATH']
+    if verbose: print(f'''*** The mq_comms_path is defined in the environment: {mq_comms_path}, will be added to sys.path ***''')
+    sys.path.append(mq_comms_path)
 except:
-    if verbose: print('*** The variable COMMS_PATH is undefined, will rely on PYTHONPATH and ../ ***')
-    comms_path = '../'
-    sys.path.append(comms_path)  # Add parent to path, to enable running locally (also for data)
+    if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH and ../ ***')
+    mq_comms_path = '../'
+    sys.path.append(mq_comms_path)  # Add parent to path, to enable running locally (also for data)
       
 if verbose:
     print(f'''*** Set the Python path: {sys.path} ***''')
 
-# ---
-try:
-    from daq import *
-    if verbose:
-        print(f'''*** PYTHONPATH contains the daq package, will use it ***''')
-except:
-    print('*** Failed to load the daq package from PYTHONPATH, exiting...***')
-    exit(-1)
-
-
 rcvr = None
 
 try:
-    from comms import Receiver
-    if verbose: print(f'''*** Successfully imported the Receiver from comms ***''')
+    from mq_comms import Receiver
+    if verbose: print(f'''*** Successfully imported the Receiver from mq_comms ***''')
 except:
-    print('*** Failed to import the Receiver from comms, exiting...***')
+    print('*** Failed to import the Receiver from mq_comms, exiting...***')
     exit(-1)
 
 
