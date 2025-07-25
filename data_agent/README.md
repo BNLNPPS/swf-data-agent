@@ -38,3 +38,15 @@ if result == 0:
 else:
     print("File upload failed.")
 ```
+
+## Prerequisite RUCIO setup
+
+One has to initialize the Rusio environment as per the "startip PanDA quide",
+and perform the _voms-proxy-init_ prior to any Rucio operations, including operating
+the Python client. The test script will attempt to load the "comms" package
+so it needs to locate it, and this is done via an environment variable i.e.
+
+```bash
+export RUCIO_COMMS_PATH=/eic/u/eicmax/testbed/swf-common-lib/
+```
+

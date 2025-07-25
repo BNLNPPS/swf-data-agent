@@ -3,8 +3,7 @@
 ## About
 
 This repository is for development of the _swf-data-agent_, which is 
-the central data handling agent within the _swf_ testbed. This is currently
-work in progress.
+the central data handling agent within the _swf_ testbed.
 
 Functionality:
 *  It receives the MQ messages from the _swf-daqsim-agent_ and takes actions

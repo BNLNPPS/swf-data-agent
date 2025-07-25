@@ -54,5 +54,9 @@ except:
 
 print("work in progress, nothing to do yet")
 
+client          = Client()
+upload_client   = UploadClient(client)
+
+
 exit(0)
 
