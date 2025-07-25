@@ -52,9 +52,7 @@ try:
     if verbose: print(f'''*** The mq_comms_path is defined in the environment: {mq_comms_path}, will be added to sys.path ***''')
     sys.path.append(mq_comms_path)
 except:
-    if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH and ../ ***')
-    mq_comms_path = '../'
-    sys.path.append(mq_comms_path)  # Add parent to path, to enable running locally (also for data)
+    if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
       
 if verbose:
     print(f'''*** Set the Python path: {sys.path} ***''')

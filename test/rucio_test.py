@@ -31,6 +31,27 @@ verbose     = args.verbose
 
 print(f'*** Verbose mode is set to {verbose} ***')
 
+# ---
+rucio_comms_path=''
+try:
+    rucio_comms_path = os.environ['RUCIO_COMMS_PATH']
+    if verbose: print(f'''*** The rucio_comms_path is defined in the environment: {rucio_comms_path}, will be added to sys.path ***''')
+    sys.path.append(rucio_comms_path)
+except KeyError:
+    if verbose: print('*** The variable RUCIO_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
+
+if verbose:
+    print(f'''*** Set the Python path: {sys.path} ***''')
+
+
+try:
+    from rucio_comms import *
+    if verbose: print(f'''*** Successfully imported classes from rucio_comms ***''')
+except:
+    print('*** Failed to import the classes from rucio_comms, exiting...***')
+    exit(-1)
+
+
 print("work in progress, nothing to do yet")
 
 exit(0)
