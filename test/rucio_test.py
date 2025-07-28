@@ -16,20 +16,27 @@ def func(to_print):
 # ---
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
-parser.add_argument("-s", "--send",     action='store_true',    help="Send mode")
-parser.add_argument("-r", "--receive",  action='store_true',    help="Receive mode")
-parser.add_argument("-m", "--message",  type=str,               help="Test message", default='test')
-parser.add_argument("-n", "--number",   type=int,               help="How many times to send", default=1)
-
+parser.add_argument("-r", "--rse",      type=str,               help="RSE", default='BNL_PROD_DISK_1')
+parser.add_argument("-d", "--did",      type=str,               help="target DID", default='')
+parser.add_argument("-p", "--path",     type=str,               help="path to source file", default='')
+parser.add_argument("-s", "--scope",    type=str,               help="scope", default='user.potekhin')
 # ---
 args        = parser.parse_args()
-send        = args.send
-receive     = args.receive
-message     = args.message
-number      = args.number
+rse         = args.rse
+did         = args.did
+path        = args.path
+scope       = args.scope
 verbose     = args.verbose
 
 print(f'*** Verbose mode is set to {verbose} ***')
+
+if did == '':
+    print('*** No DID specified, exiting... ***')
+    exit(-1)
+
+if path == '':
+    print('*** No path specified, exiting... ***')
+    exit(-1)
 
 # ---
 rucio_comms_path=''
@@ -52,16 +59,14 @@ except:
     exit(-1)
 
 
-print("work in progress, nothing to do yet")
-
 client          = Client()
 upload_client   = UploadClient(client)
 
 upload_spec = {
-    'path': '/eic/u/eicmax/testbed/swf-data-agent/test.txt',
-    'rse': 'BNL_PROD_DISK_1',
-    'did_scope': 'user.potekhin',
-    'did_name': 't1.txt',
+    'path':         path,
+    'rse':          rse,
+    'did_scope':    scope,
+    'did_name':     did,
 }
 
 result = upload_client.upload([upload_spec])
