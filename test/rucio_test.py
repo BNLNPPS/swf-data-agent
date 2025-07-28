@@ -57,6 +57,20 @@ print("work in progress, nothing to do yet")
 client          = Client()
 upload_client   = UploadClient(client)
 
+upload_spec = {
+    'path': '/eic/u/eicmax/testbed/swf-data-agent/test.txt',
+    'rse': 'BNL_PROD_DISK_1',
+    'did_scope': 'user.potekhin',
+    'did_name': 't1.txt',
+}
+
+result = upload_client.upload([upload_spec])
+
+if result == 0:
+    print("File uploaded successfully!")
+else:
+    print("File upload failed.")
+
 
 exit(0)
 
