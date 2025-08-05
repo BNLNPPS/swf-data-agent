@@ -1,9 +1,23 @@
 # The Data Agent
 
-## Python interface to Rucio
+
+## Table of Contents
+- [Overview](#overview)
+- [Python Interface](#Python)
+- [Prerequisites](#Prerequisite RUCIO setup)
+
+## Overview
+
+The _Data Agent_ is responsible for the following aspects of the Streaming Workflow
+operation:
+
+- listen to MQ messages produced by the _daqsim_, which signal the start and end of runs,
+and the creation of _STFs_.
 
 
-An example (to be validated).
+## Python
+
+An example of using the Rucio package.
 
 ```python
 from rucio.client import Client
