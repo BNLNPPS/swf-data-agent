@@ -4,15 +4,16 @@
 ## Table of Contents
 - [Overview](#overview)
 - [Python Interface](#Python)
-- [Prerequisites](#Prerequisite RUCIO setup)
+- [Prerequisite setup](#Setup)
 
 ## Overview
 
-The _Data Agent_ is responsible for the following aspects of the Streaming Workflow
+The _Data Agent_ package is responsible for the following aspects of the Streaming Workflow
 operation:
 
 - listen to MQ messages produced by the _daqsim_, which signal the start and end of runs,
 and the creation of _STFs_.
+- interact with Rucio to properly register the datasets and STFs.
 
 
 ## Python
@@ -53,7 +54,7 @@ else:
     print("File upload failed.")
 ```
 
-## Prerequisite RUCIO setup
+## Setup
 
 One has to initialize the Rusio environment as per the "startip PanDA quide",
 and perform the _voms-proxy-init_ prior to any Rucio operations, including operating

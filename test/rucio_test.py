@@ -69,7 +69,11 @@ upload_spec = {
     'did_name':     did,
 }
 
-result = upload_client.upload([upload_spec])
+try:
+    result = upload_client.upload([upload_spec])
+except Exception as e:
+    print(f'*** Exception during upload: {e} ***')
+    exit(-1)
 
 if result == 0:
     print("File uploaded successfully!")

@@ -55,6 +55,18 @@ rucio --help # a useful CLI help is available
 rucio add-dataset user.potekhin:test # add dataset
 rucio upload --rse BNL_PROD_DISK_1 --scope user.potekhin ./README.md # upload to a storage endpoint
 rucio download user.potekhin:user.potekhin.74311a67-6e47-467d-b44a-244eac13c8be.log # download a container
+rucio list-dids --filter 'type=FILE' user.potekhin:*
+```
+
+For running tests and other Python functions which depend on the common SWF packages, please use a setting
+similar to this one:
+
+```bash
+export RUCIO_COMMS_PATH=/eic/u/eicmax/testbed/swf-common-lib/
+```
+And,
+```bash
+voms-proxy-init --cert ./mycert.pem --key ./mykey.pem
 ```
 
 ## XRootD
