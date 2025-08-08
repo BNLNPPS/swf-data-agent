@@ -59,7 +59,7 @@ except:
     exit(-1)
 
 
-client          = Client()
+client          = RucioClient()
 upload_client   = UploadClient(client)
 
 upload_spec = {
