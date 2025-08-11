@@ -21,6 +21,8 @@ parser.add_argument("-d", "--did",      type=str,               help="target DID
 
 parser.add_argument("-D", "--dataset",  type=str,               help="Dataset name, if one is to be created", default=None)
 parser.add_argument("-L", "--lifetime", type=int,               help="Dataset lifetime", default=1000)
+parser.add_argument("-l", "--lfn",      type=str,               help="lfn", default=None)
+
 
 parser.add_argument("-p", "--path",     type=str,               help="path to source file", default='')
 parser.add_argument("-s", "--scope",    type=str,               help="scope", default='user.potekhin')
@@ -31,6 +33,7 @@ did         = args.did
 
 dataset     = args.dataset
 lifetime    = args.lifetime
+lfn         = args.lfn
 
 path        = args.path
 scope       = args.scope
@@ -75,25 +78,26 @@ except:
     exit(-1)
 
 
-# 3. Attach file to the open dataset
-
-file_manager = FileManager()
-
-file_info = FileInfo(
-    lfn="t1.txt",
-    pfn="root://test.com:1094/testpath/testdir/t1.txt",
-    size=2,
-    checksum="ad:006e003c",
-    scope="user.potekhin"
-)
 
 
+if lfn is None:
+    # Attach file to the open dataset
 
+    file_manager = FileManager()
 
-attachment_success = file_manager.add_files_to_dataset([file_info], "user.potekhin:foo1")
-print(f"File attached to dataset: {attachment_success}")
+    file_info = FileInfo(
+        lfn=lfn,
+        pfn="root://test.com:1094/testpath/testdir/t1.txt",
+        size=2,
+        checksum="ad:006e003c",
+        scope=scope
+    )
 
-exit(0)
+    # Register the file replica
+    attachment_success = file_manager.add_files_to_dataset([file_info], f'''{scope}:{dataset}''')
+    print(f"File attached to dataset: {attachment_success}")
+
+    exit(0)
 
 
 
