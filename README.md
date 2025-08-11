@@ -58,14 +58,20 @@ rucio download user.potekhin:user.potekhin.74311a67-6e47-467d-b44a-244eac13c8be.
 rucio list-dids --filter 'type=FILE' user.potekhin:*
 # This needs to be used prior to deleting rules, if unsure -
 rucio list-rules --account my_account
+# get useful info about an item:
+rucio list-file-replicas user.potekhin:t1.txt
 ```
 
 The way to delete files in Rucio is to delete associated rules.
 
 ```bash
-rucio update-rule 680886366a584dcfb79b79c3f47af12d   --lifetime -1
 # NB. Not every user has the privilege to do this, some accounts do e.g. swf.
+rucio update-rule 680886366a584dcfb79b79c3f47af12d   --lifetime -1
+# NB. The change won't be instantaneous.
 ```
+
+Currently the CLI commands need to be run with the local Rucio imports deactivated, because
+of the clash with the global ATLAS-based setup.
 
 
 For running tests and other Python functions which depend on the common SWF packages, please use a setting

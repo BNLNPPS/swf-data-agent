@@ -1,6 +1,10 @@
 # VScode
 *.code-workspace
 
+
+# Rucio test downloads
+user.*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
