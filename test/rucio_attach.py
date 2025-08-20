@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 #############################################
 '''
-This utility is used to test the rucio_comms package.
+This utility is used to test a few features the rucio_comms package.
 WORK IN PROGRESS!
 '''
 
@@ -21,8 +21,6 @@ parser.add_argument("-d", "--did",      type=str,               help="target DID
 
 parser.add_argument("-D", "--dataset",  type=str,               help="Dataset name, if one is to be created", default=None)
 parser.add_argument("-L", "--lifetime", type=int,               help="Dataset lifetime", default=1000)
-parser.add_argument("-M", "--metadata", action='store_true',    help="Get metadata of the dataset", default=False)
-
 parser.add_argument("-l", "--lfn",      type=str,               help="lfn", default=None)
 
 
@@ -34,7 +32,6 @@ rse         = args.rse
 did         = args.did
 
 dataset     = args.dataset
-metadata    = args.metadata
 lifetime    = args.lifetime
 lfn         = args.lfn
 
@@ -46,7 +43,7 @@ print(f'*** Verbose mode is set to {verbose} ***')
 
 
 if dataset is not None:
-    print(f'*** Dataset operation requested: {dataset} ***')
+    print(f'*** Dataset creation requested: {dataset} ***')
 else:
     if did == '':
         print('*** No DID specified, exiting... ***')
@@ -83,7 +80,7 @@ except:
 
 
 
-if lfn is not None:
+if lfn is None:
     # Attach file to the open dataset
 
     file_manager = FileManager()
@@ -106,16 +103,6 @@ if lfn is not None:
 
 
 if dataset:
-    if metadata:
-        dataset_manager = DatasetManager()
-        meta = dataset_manager.get_dataset_metadata(f'''{scope}:{dataset}''')
-        if meta:
-            print(f'*** Metadata for the dataset {scope}:{dataset}: {meta} ***')
-        else:
-            print(f'*** Failed to get metadata for the dataset {scope}:{dataset}, exiting... ***')
-            exit(-1)
-
-        exit(0)
     dataset_manager = DatasetManager()
     result = dataset_manager.create_dataset(dataset_name=f'''{scope}:{dataset}''', lifetime_days=lifetime, open_dataset=True)
     if verbose:

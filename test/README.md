@@ -5,7 +5,9 @@ This is currently work in progress, and the code contains two sections:
 * Rucio Communitcations
 
 
-An example of Rucio interaction (upload):
+An example of Rucio interaction:
 ```bash
-./test/rucio_test.py -v -p /eic/u/eicmax/testbed/swf-data-agent/test.txt -d t8.txt -r BNL_PROD_DISK_1 -s group.daq
+#  file upload
+./test/rucio_test.py -v -p ~/tst.txt -d tst2.txt -r BNL_PROD_DISK_1 -s group.daq -l tst
+
 ```

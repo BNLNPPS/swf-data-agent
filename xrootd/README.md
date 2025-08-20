@@ -13,9 +13,12 @@ service xrootd@standalone status # check status
 
 # Test copying to the client's folder:
 xrdcp root://pandaserver02.sdcc.bnl.gov:1094//data/DAQbuffer/test.txt .
+
+# Checking the file in the working area
+xrdfs root://dcintdoor.sdcc.bnl.gov:1094//pnfs ls -l /pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_bnl/group/daq/1d/49/myout.txt
 ```
 
-## Rucio Storage Element organization
+## Rucio Storage Element organization (including the XRootD door access)
 
 * One RSE to emulate the DAQ buffer, where DAQ/STF files will be copied to and registered with Rucio
    * DAQ_DISK_3, root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/
@@ -23,4 +26,3 @@ xrdcp root://pandaserver02.sdcc.bnl.gov:1094//data/DAQbuffer/test.txt .
 and PanDA will read task input datasets from them, and save output to them as well.  
    * E1_BNL_DISK_1, root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_bnl/
    * E1_JLAB_DISK_1, root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_jlab/
-   

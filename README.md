@@ -60,6 +60,8 @@ rucio list-dids --filter 'type=FILE' user.potekhin:*
 rucio list-rules --account my_account
 # get useful info about an item:
 rucio list-file-replicas user.potekhin:t1.txt
+# Will erase a dataset after the 24hrs grace period, is irreversible.
+rucio erase user.potekhin:mydataset
 ```
 
 The way to delete files in Rucio is to delete associated rules.
@@ -83,6 +85,15 @@ export RUCIO_COMMS_PATH=/eic/u/eicmax/testbed/swf-common-lib/
 And,
 ```bash
 voms-proxy-init --cert ./mycert.pem --key ./mykey.pem
+```
+
+
+## Rules
+
+```bash
+eicmax@pandaserver02:~ $ rucio-admin subscription add  --account swf --priority 1 testsub   '{"pattern": "swf*", "did_type": ["DATASET"], "scope": ["group.daq"]}'   '[{"copies": 2, "rse_expression": "E1_BNL_DISK_1|E1_JLAB_DISK_1", "activity": "T0 Export", "grouping": "DATASET"}]' 'Test of teh SWF system'
+Subscription added b9bb14d2ebff463581c64a16546c245b
+
 ```
 
 ## XRootD
