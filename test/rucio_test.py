@@ -25,9 +25,9 @@ parser.add_argument("-M", "--metadata", action='store_true',    help="Get metada
 
 parser.add_argument("-l", "--lfn",      type=str,               help="lfn", default=None)
 
-
-parser.add_argument("-p", "--path",     type=str,               help="path to source file", default='')
+parser.add_argument("-p", "--path",     type=str,               help="path to source file, for upload", default='')
 parser.add_argument("-s", "--scope",    type=str,               help="scope", default='user.potekhin')
+
 # ---
 args        = parser.parse_args()
 rse         = args.rse
@@ -80,19 +80,21 @@ except:
     print('*** Failed to import the classes from rucio_comms, exiting...***')
     exit(-1)
 
+# ---
+if lfn is not None: # Attach file to the open dataset
+    if verbose: print(f'''*** Adding a file with lfn: {lfn} to the scope/dataset: {scope}:{dataset} ***''')
 
-
-
-if lfn is not None:
-    # Attach file to the open dataset
-
-    file_manager = FileManager()
-
-    file_info = FileInfo(
+    client = RucioClient()
+    metadata = client.get_metadata(scope, lfn) # need metadata to register the file
+    # e.g. print(metadata['bytes'], metadata['adler32'], metadata['md5'], metadata['created_at'])
+    # if verbose: print(f'''*** Metadata for the file {scope}:{lfn}: {metadata} ***''')
+    
+    file_manager    = FileManager()
+    file_info       = FileInfo(
         lfn=lfn,
-        pfn="root://test.com:1094/testpath/testdir/t1.txt",
-        size=2,
-        checksum="ad:006e003c",
+        pfn="root://test.com:1094/testpath/testdir/t1.txt", # not used
+        size=metadata['bytes'],
+        checksum="ad:"+metadata['adler32'],
         scope=scope
     )
 
@@ -102,11 +104,10 @@ if lfn is not None:
 
     exit(0)
 
-
-
-
+# ---
 if dataset:
     if metadata:
+        if verbose: print(f'''*** Attempting to fetch the metadata for scope/dataset: {scope}:{dataset} ***''')
         dataset_manager = DatasetManager()
         meta = dataset_manager.get_dataset_metadata(f'''{scope}:{dataset}''')
         if meta:
@@ -116,6 +117,10 @@ if dataset:
             exit(-1)
 
         exit(0)
+
+    # Create a new dataset
+    if verbose: print(f'''*** Creating a new dataset with name: {scope}:{dataset} ***''')
+    
     dataset_manager = DatasetManager()
     result = dataset_manager.create_dataset(dataset_name=f'''{scope}:{dataset}''', lifetime_days=lifetime, open_dataset=True)
     if verbose:
@@ -128,7 +133,6 @@ if dataset:
 
     exit(0)
 
-client          = RucioClient()
 upload_client   = UploadClient(client)
 
 upload_spec = {
