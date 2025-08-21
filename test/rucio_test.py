@@ -80,11 +80,20 @@ except:
     print('*** Failed to import the classes from rucio_comms, exiting...***')
     exit(-1)
 
+
+# Client will be needed for any operation with Rucio
+if verbose: print(f'''*** Instantiating the RucioClient ***''')
+try:
+    client = RucioClient()
+    if verbose: print(f'''*** Successfully instantiated the RucioClient ***''')
+except Exception as e:
+    print(f'*** Failed to instantiate the RucioClient: {e}, exiting... ***')
+    exit(-1)
+
 # ---
 if lfn is not None: # Attach file to the open dataset
     if verbose: print(f'''*** Adding a file with lfn: {lfn} to the scope/dataset: {scope}:{dataset} ***''')
 
-    client = RucioClient()
     metadata = client.get_metadata(scope, lfn) # need metadata to register the file
     # e.g. print(metadata['bytes'], metadata['adler32'], metadata['md5'], metadata['created_at'])
     # if verbose: print(f'''*** Metadata for the file {scope}:{lfn}: {metadata} ***''')
