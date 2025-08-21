@@ -62,6 +62,8 @@ rucio list-rules --account my_account
 rucio list-file-replicas user.potekhin:t1.txt
 # Will erase a dataset after the 24hrs grace period, is irreversible.
 rucio erase user.potekhin:mydataset
+# List contents of a dataset:
+rucio list-content group.daq:swf1
 ```
 
 The way to delete files in Rucio is to delete associated rules.

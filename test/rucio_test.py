@@ -59,9 +59,7 @@ else:
 
 ###################################################################
 # ---
-
 rucio_comms_path=''
-
 try:
     rucio_comms_path = os.environ['RUCIO_COMMS_PATH']
     if verbose: print(f'''*** The rucio_comms_path is defined in the environment: {rucio_comms_path}, will be added to sys.path ***''')
@@ -72,7 +70,7 @@ except KeyError:
 if verbose:
     print(f'''*** Set the Python path: {sys.path} ***''')
 
-
+# ---
 try:
     from rucio_comms import *
     if verbose: print(f'''*** Successfully imported classes from rucio_comms ***''')
@@ -93,23 +91,10 @@ except Exception as e:
 # ---
 if lfn is not None: # Attach file to the open dataset
     if verbose: print(f'''*** Adding a file with lfn: {lfn} to the scope/dataset: {scope}:{dataset} ***''')
-
-    metadata = client.get_metadata(scope, lfn) # need metadata to register the file
-    # e.g. print(metadata['bytes'], metadata['adler32'], metadata['md5'], metadata['created_at'])
-    # if verbose: print(f'''*** Metadata for the file {scope}:{lfn}: {metadata} ***''')
-    
-    file_manager    = FileManager()
-    file_info       = FileInfo(
-        lfn=lfn,
-        pfn="root://test.com:1094/testpath/testdir/t1.txt", # not used
-        size=metadata['bytes'],
-        checksum="ad:"+metadata['adler32'],
-        scope=scope
-    )
-
-    # Register the file replica
-    attachment_success = file_manager.add_files_to_dataset([file_info], f'''{scope}:{dataset}''')
-    print(f"File attached to dataset: {attachment_success}")
+    file_manager    = FileManager(rucio_client = client)
+    # Register the file replica, using the lfn
+    attachment_success = file_manager.add_files_to_dataset([f'''{scope}:{lfn}'''], f'''{scope}:{dataset}''')
+    if verbose: print(f"*** File attached to dataset: {attachment_success} ***")
 
     exit(0)
 
@@ -165,3 +150,25 @@ else:
 
 exit(0)
 
+################## ATTIC ##########################
+# Attaching files to a dataset
+# ---
+    # try:
+    #     metadata = client.get_metadata(scope, lfn) # may need metadata to register the file, keep for later
+    # except:
+    #     pass
+    
+    # e.g. print(metadata['bytes'], metadata['adler32'], metadata['md5'], metadata['created_at'])
+    # if verbose: print(f'''*** Metadata for the file {scope}:{lfn}: {metadata} ***''')
+  
+
+    # Alternatively, we can use the FileInfo class to create a file info object
+    # file_info       = FileInfo(
+    #     lfn=lfn,
+    #     pfn="root://test.com:1094/testpath/testdir/t1.txt", # not used
+    #     size=metadata['bytes'],
+    #     checksum="ad:"+metadata['adler32'],
+    #     scope=scope
+    # )
+    # Alternatively, we can use the add_files_to_dataset method with FileInfo objects
+    # attachment_success = file_manager.add_files_to_dataset([file_info], f'''{scope}:{dataset}''')
