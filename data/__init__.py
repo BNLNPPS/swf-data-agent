@@ -1,2 +1,2 @@
 __version__="0.1"
-from .daq import *
+from .data import *

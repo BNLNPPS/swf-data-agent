@@ -18,16 +18,6 @@ parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the e
 parser.add_argument("-S", "--send",     action='store_true',    help="Send messages to MQ",                     default=False)
 parser.add_argument("-R", "--receive",  action='store_true',    help="Receive messages from MQ",                default=False)
 
-parser.add_argument("-s", "--schedule", type=str,               help='Path to the schedule (YAML)',             default='')
-
-parser.add_argument("-f", "--factor",   type=float,             help='Time factor',                             default=1.0)
-parser.add_argument("-u", "--until",    type=float,             help='The limit, if undefined: end of schedule',default=None) #  required=False, nargs='?')
-parser.add_argument("-c", "--clock",    type=float,             help='Scheduler clock freq(seconds)',           default=1.0)
-
-parser.add_argument("-d", "--dest",     type=str,               help='Path to the destination folder, if empty do not output data',  default='')
-
-parser.add_argument("-L", "--low",      type=float,             help='The "low" time limit on STF production',  default=1.0)
-parser.add_argument("-H", "--high",     type=float,             help='The "high" time limit on STF production', default=2.0)
 
 args        = parser.parse_args()
 verbose     = args.verbose
@@ -40,18 +30,8 @@ if verbose:
     print(f'''*** Verbose mode is set to {verbose} ***''')
     print(f'''*** Send mode is set to {send}, receive more set to {receive} ***''')
 
-schedule    = args.schedule
-dest        = args.dest
-
-factor      = args.factor
-until       = args.until
-clock       = args.clock
-
-low         = args.low
-high        = args.high
-
 # ---
-DAQSIM_PATH         = ''
+DATASIM_PATH        = ''
 MQ_COMMS_PATH       = ''
 SWF_COMMON_LIB_PATH = ''
 
@@ -69,13 +49,13 @@ except:
     if verbose: print('*** The variable SWF_COMMON_LIB_PATH is undefined, will rely on PYTHONPATH ***')
 
 try:
-    DAQSIM_PATH=os.environ['DAQSIM_PATH']
-    if verbose: print(f'''*** The DAQSIM_PATH is defined in the environment: {DAQSIM_PATH}, will be added to sys.path ***''')
-    sys.path.append(DAQSIM_PATH)
+    DATASIM_PATH=os.environ['DATASIM_PATH']
+    if verbose: print(f'''*** The DATASIM_PATH is defined in the environment: {DATASIM_PATH}, will be added to sys.path ***''')
+    sys.path.append(DATASIM_PATH)
 except:
-    if verbose: print('*** The variable DAQSIM_PATH is undefined, will rely on PYTHONPATH and ../ ***')
-    DAQSIM_PATH = '../'  # Add parent to path, to enable running locally (also for data)
-    sys.path.append(DAQSIM_PATH)
+    if verbose: print('*** The variable DATASIM_PATH is undefined, will rely on PYTHONPATH and ../ ***')
+    DATASIM_PATH = '../'  # Add parent to path, to enable running locally (also for data)
+    sys.path.append(DATASIM_PATH)
 
 
 try:
@@ -85,24 +65,16 @@ try:
 except:
     if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
 
-if schedule=='':    schedule    = DAQSIM_PATH + "/config/schedule-rt.yml"
 if verbose:
     print(f'''*** Set the Python path: {sys.path} ***''')
-    print(f'''*** Schedule description file path: {schedule} ***''')
-    if dest=='':
-        print(f'''*** No output destination is set, will not write data ***''')
-    else:  
-        print(f'''*** Output destination is set to: {dest} ***''')
-
-    print(f'''*** Simulation time factor: {factor} ***''')
 
 # ---
 try:
-    from daq import *
+    from data import *
     if verbose:
-        print(f'''*** PYTHONPATH contains the daq package, will use it ***''')
+        print(f'''*** PYTHONPATH contains the data package, will use it ***''')
 except:
-    print('*** Failed to load the daq package from PYTHONPATH, exiting...***')
+    print('*** Failed to load the data package from PYTHONPATH, exiting...***')
     exit(-1)
 
 
@@ -148,34 +120,3 @@ if receive:
     except:
         print('*** Failed to instantiate the Receiver, exiting...***')
         exit(-1)
-
-# ---
-daq = DAQ(schedule_f    = schedule,
-          destination   = dest,
-          until         = until,
-          clock         = clock,
-          factor        = factor,
-          low           = low,
-          high          = high,
-          verbose       = verbose,
-          sender        = sndr,
-          receiver      = rcvr
-          )
-
-daq.run()
-
-print('---')
-if verbose:
-    print(f'''*** Completed at {daq.get_simpy_time()}. Number of STFs generated: {daq.Nstf} ***''')
-    print(f'''*** Disconnecting MQ communications ***''')
-
-if send:
-    if sndr:
-        sndr.disconnect()
-if receive:
-    if rcvr:
-        rcvr.disconnect()
-
-print('---')
-
-
