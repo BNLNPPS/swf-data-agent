@@ -11,7 +11,10 @@ def func(to_print):
     print(to_print) # a simple function to process received messages
 
 
+
+# ---
 parser = argparse.ArgumentParser()
+
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
 
@@ -34,6 +37,15 @@ if verbose:
 DATASIM_PATH        = ''
 MQ_COMMS_PATH       = ''
 SWF_COMMON_LIB_PATH = ''
+RUCIO_COMMS_PATH    = ''
+
+try:
+    RUCIO_COMMS_PATH = os.environ['RUCIO_COMMS_PATH']
+    if verbose: print(f'''*** The RUCIO_COMMS_PATH is defined in the environment: {RUCIO_COMMS_PATH}, will be added to sys.path ***''')
+    sys.path.append(RUCIO_COMMS_PATH)
+except KeyError:
+    if verbose: print('*** The variable RUCIO_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
+
 
 try:
     SWF_COMMON_LIB_PATH = os.environ['SWF_COMMON_LIB_PATH']

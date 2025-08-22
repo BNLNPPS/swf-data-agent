@@ -2,7 +2,7 @@
 #############################################
 '''
 This utility is used to test the rucio_comms package.
-WORK IN PROGRESS!
+It allows for creating datasets, uploading files, and managing metadata.
 '''
 
 import os, argparse, datetime, time, sys
