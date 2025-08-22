@@ -120,3 +120,11 @@ if receive:
     except:
         print('*** Failed to instantiate the Receiver, exiting...***')
         exit(-1)
+
+# ---
+
+data = DATA(verbose=verbose, sender=sndr, receiver=rcvr)
+
+data.run()
+
+exit(0)
