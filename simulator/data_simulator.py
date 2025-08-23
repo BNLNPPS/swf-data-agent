@@ -69,27 +69,14 @@ except:
     DATASIM_PATH = '../'  # Add parent to path, to enable running locally (also for data)
     sys.path.append(DATASIM_PATH)
 
-
-# try:
-#     MQ_COMMS_PATH = os.environ['MQ_COMMS_PATH']
-#     if verbose: print(f'''*** The MQ_COMMS_PATH is defined in the environment: {MQ_COMMS_PATH}, will be added to sys.path ***''')
-#     if MQ_COMMS_PATH not in sys.path: sys.path.append(MQ_COMMS_PATH)
-# except:
-#     if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
-
-
-print('$$$$$$$$$$$$$$$$$$$$$$$$', os.environ['MQ_COMMS_PATH'])
-
-if verbose:
-    print(f'''*** Set the Python path: {sys.path} ***''')
+if verbose: print(f'''*** Set the Python path: {sys.path} ***''')
 
 # ---
 try:
     from data import *
-    if verbose:
-        print(f'''*** PYTHONPATH contains the data package, will use it ***''')
+    if verbose: print(f'''*** Successful import of the data package ***''')
 except:
-    print('*** Failed to load the data package from PYTHONPATH, exiting...***')
+    if verbose: print('*** Failed to load the data package from PYTHONPATH, exiting...***')
     exit(-1)
 
 
@@ -99,29 +86,9 @@ if envtest:
     print('*** Environment variables have been tested, exiting... ***')
     exit(0)
 
-sndr = None
-rcvr = None
-
-if send:
-    try:
-        from mq_comms import Sender
-        if verbose: print(f'''*** Successfuly imported the Sender from mq_comms ***''')
-    except:
-        print('*** Failed to import the Sender from mq_comms, exiting...***')
-        exit(-1)
-
-    try:
-        sndr = Sender(verbose=verbose)
-        if verbose: print(f'''*** Successfully instantiated the Sender ***''')
-        sndr.connect()
-        if verbose: print(f'''*** Successfully connected the Sender to MQ ***''')
-    except:
-        print('*** Failed to instantiate the Sender, exiting...***')
-        exit(-1)
-
 # ---
 
-data = DATA(verbose=verbose, sender=sndr)
+data = DATA(verbose=verbose)
 
 data.run()
 
