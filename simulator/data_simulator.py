@@ -70,12 +70,15 @@ except:
     sys.path.append(DATASIM_PATH)
 
 
-try:
-    MQ_COMMS_PATH = os.environ['MQ_COMMS_PATH']
-    if verbose: print(f'''*** The MQ_COMMS_PATH is defined in the environment: {MQ_COMMS_PATH}, will be added to sys.path ***''')
-    if MQ_COMMS_PATH not in sys.path: sys.path.append(MQ_COMMS_PATH)
-except:
-    if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
+# try:
+#     MQ_COMMS_PATH = os.environ['MQ_COMMS_PATH']
+#     if verbose: print(f'''*** The MQ_COMMS_PATH is defined in the environment: {MQ_COMMS_PATH}, will be added to sys.path ***''')
+#     if MQ_COMMS_PATH not in sys.path: sys.path.append(MQ_COMMS_PATH)
+# except:
+#     if verbose: print('*** The variable MQ_COMMS_PATH is undefined, will rely on PYTHONPATH ***')
+
+
+print('$$$$$$$$$$$$$$$$$$$$$$$$', os.environ['MQ_COMMS_PATH'])
 
 if verbose:
     print(f'''*** Set the Python path: {sys.path} ***''')
@@ -94,7 +97,7 @@ from rest_logging import setup_rest_logging
 
 if envtest:
     print('*** Environment variables have been tested, exiting... ***')
-    exit(0) 
+    exit(0)
 
 sndr = None
 rcvr = None
@@ -116,26 +119,9 @@ if send:
         print('*** Failed to instantiate the Sender, exiting...***')
         exit(-1)
 
-
-if receive:
-    try:
-        from mq_comms import Receiver
-        if verbose: print(f'''*** Successfully imported the Receiver from comms ***''')
-    except:
-        print('*** Failed to import the Receiver from comms, exiting...***')
-        exit(-1)
-    
-    try:
-        rcvr = Receiver(verbose=verbose, processor=func) # a function to process received messages
-        rcvr.connect()
-        if verbose: print(f'''*** Successfully instantiated and connected the Receiver, will receive messages from MQ ***''')
-    except:
-        print('*** Failed to instantiate the Receiver, exiting...***')
-        exit(-1)
-
 # ---
 
-data = DATA(verbose=verbose, sender=sndr, receiver=rcvr)
+data = DATA(verbose=verbose, sender=sndr)
 
 data.run()
 
