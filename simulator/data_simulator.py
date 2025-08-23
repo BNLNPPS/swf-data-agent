@@ -1,16 +1,13 @@
 #! /usr/bin/env python
 
 #############################################
+'''
+This is a driver script for the data simulator.
+It initializes the DATA class and starts the data management process.
+'''
 
 import os, argparse, datetime, sys
 from   sys import exit
-
-# ---
-
-def func(to_print):
-    print(to_print) # a simple function to process received messages
-
-
 
 # ---
 parser = argparse.ArgumentParser()
@@ -18,24 +15,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
 
-parser.add_argument("-S", "--send",     action='store_true',    help="Send messages to MQ",                     default=False)
-parser.add_argument("-R", "--receive",  action='store_true',    help="Receive messages from MQ",                default=False)
-
-
 args        = parser.parse_args()
 verbose     = args.verbose
 envtest     = args.envtest
 
-send        = args.send
-receive     = args.receive
-
-if verbose:
-    print(f'''*** Verbose mode is set to {verbose} ***''')
-    print(f'''*** Send mode is set to {send}, receive more set to {receive} ***''')
+if verbose: print(f'''*** Verbose mode is set to {verbose} ***''')
 
 # ---
 DATASIM_PATH        = ''
-MQ_COMMS_PATH       = ''
+
 SWF_COMMON_LIB_PATH = ''
 RUCIO_COMMS_PATH    = ''
 
