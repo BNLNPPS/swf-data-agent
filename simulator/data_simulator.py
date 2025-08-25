@@ -14,12 +14,17 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
+parser.add_argument("-s", "--scope",    type=str,               help="scope", default='group.daq')
+
 
 args        = parser.parse_args()
 verbose     = args.verbose
 envtest     = args.envtest
+scope       = args.scope
 
-if verbose: print(f'''*** Verbose mode is set to {verbose} ***''')
+if verbose:
+    print(f'''*** Verbose mode is set to {verbose} ***''')
+    print(f'''*** Rucio scope is set to {scope} ***''')
 
 # ---
 DATASIM_PATH        = ''
@@ -76,7 +81,7 @@ if envtest:
 
 # ---
 
-data = DATA(verbose=verbose)
+data = DATA(verbose=verbose, rucio_scope=scope)
 
 data.run()
 
