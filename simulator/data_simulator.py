@@ -15,16 +15,18 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
 parser.add_argument("-s", "--scope",    type=str,               help="scope", default='group.daq')
-
+parser.add_argument("-d", "--datadir",  type=str,               help="Data Container (folder), in which to create run folders", default='/tmp')
 
 args        = parser.parse_args()
 verbose     = args.verbose
 envtest     = args.envtest
 scope       = args.scope
+datadir     = args.datadir
 
 if verbose:
     print(f'''*** Verbose mode is set to {verbose} ***''')
     print(f'''*** Rucio scope is set to {scope} ***''')
+    print(f'''*** Data container (folder) is set to {datadir} ***''')
 
 # ---
 DATASIM_PATH        = ''
@@ -81,7 +83,7 @@ if envtest:
 
 # ---
 
-data = DATA(verbose=verbose, rucio_scope=scope)
+data = DATA(verbose=verbose, rucio_scope=scope, data_container=datadir)
 
 data.run()
 
