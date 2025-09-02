@@ -15,6 +15,9 @@ operation:
 and the creation of _STFs_.
 - interact with Rucio to properly register the datasets and STFs.
 
+It uses the **DATA** class for core operations. In case the Rucio _scope_ is not
+set, no Rucio operations will be performed.
+
 
 ## Python
 

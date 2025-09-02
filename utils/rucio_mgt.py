@@ -1,5 +1,6 @@
 #! /usr/bin/env python
 #############################################
+
 '''
 This utility is used for managing Rucio items.
 '''
@@ -9,23 +10,20 @@ from   datetime import datetime as dt
 from   sys import exit
 
 # ---
-
-def func(to_print):
-    print(to_print) # a simple function to process received messages
-# ---
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
-parser.add_argument("-r", "--rse",      type=str,               help="RSE", default='BNL_PROD_DISK_1')
-parser.add_argument("-d", "--did",      type=str,               help="target DID", default='')
 
-parser.add_argument("-D", "--dataset",  type=str,               help="Dataset name, if one is to be created", default=None)
-parser.add_argument("-L", "--lifetime", type=int,               help="Dataset lifetime", default=1000)
+parser.add_argument("-r", "--rse",      type=str,               help="RSE",                 default='BNL_PROD_DISK_1')
+parser.add_argument("-d", "--did",      type=str,               help="target DID",          default='')
+
+parser.add_argument("-D", "--dataset",  type=str,               help="Dataset name",        default=None)
+parser.add_argument("-L", "--lifetime", type=int,               help="Dataset lifetime",    default=None)
 parser.add_argument("-M", "--metadata", action='store_true',    help="Get metadata of the dataset", default=False)
 
 parser.add_argument("-l", "--lfn",      type=str,               help="lfn", default=None)
 
 parser.add_argument("-p", "--path",     type=str,               help="path to source file, for upload", default='')
-parser.add_argument("-s", "--scope",    type=str,               help="scope", default='user.potekhin')
+parser.add_argument("-s", "--scope",    type=str,               help="scope", default='group.daq')
 
 # ---
 args        = parser.parse_args()
@@ -41,20 +39,7 @@ path        = args.path
 scope       = args.scope
 verbose     = args.verbose
 
-print(f'*** Verbose mode is set to {verbose} ***')
-
-
-# if dataset is not None:
-#     print(f'*** Dataset operation requested: {dataset} ***')
-# else:
-#     if did == '':
-#         print('*** No DID specified, exiting... ***')
-#         exit(-1)
-
-#     if path == '':
-#         print('*** No path specified, exiting... ***')
-#         exit(-1)
-
+if verbose: print(f'*** Verbose mode is set to {verbose} ***')
 
 ###################################################################
 # ---
@@ -93,13 +78,44 @@ from rucio.client.didclient import DIDClient
 # Initialize the DIDClient
 did_client = DIDClient()
 
-print("Listing DIDs in scope 'mock':")
-for did in did_client.list_dids(scope='group.daq', filters={'type': 'FILE'}):
-    print(did)
 
+if dataset:
+    if verbose: print(f'*** Dataset operation requested: {dataset} ***')
+    if metadata:
+        if verbose: print(f'''*** Attempting to fetch the metadata for scope/dataset: {scope}:{dataset} ***''')
+        dataset_manager = DatasetManager()
+        meta = dataset_manager.get_dataset_metadata(f'''{scope}:{dataset}''')
+        if meta:
+            if verbose:
+                print(f'*** Metadata for the dataset {scope}:{dataset}: ***')
+                sorted_dict = dict(sorted(meta.items()))
+                # print(sorted_dict)
+                for k, v in sorted_dict.items():
+                    print(f"{k:<15}{v}")
+                    # print(f'    {k}: {v}')
+                
+        else:
+            if verbose: print(f'*** Failed to get metadata for the dataset {scope}:{dataset}, exiting... ***')
+            exit(-1)
 
-did_client.set_metadata(scope=scope, name='run_20250828175642', key='lifetime', value=-1)
-print(f'*** Cut! ***')
+        exit(0)
+    elif lifetime:
+        if verbose: print(f'''*** Setting the lifetime for scope/dataset: {scope}:{dataset} to {lifetime} days ***''')
+        did_client.set_metadata(scope=scope, name=dataset, key='lifetime', value=lifetime)
+        exit(0)
+
+else:
+    if did == '':
+        print('*** No DID specified, exiting... ***')
+        exit(-1)
+
+    if path == '':
+        print('*** No path specified, exiting... ***')
+        exit(-1)
+
+#for did in did_client.list_dids(scope=scope, filters={'type': 'FILE'}):
+#    print(did)
+
 
 exit(0)
 
