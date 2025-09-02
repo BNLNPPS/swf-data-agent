@@ -5,7 +5,7 @@
 This utility is used for managing Rucio items.
 '''
 
-import os, argparse, datetime, time, sys
+import os, argparse, datetime, time, sys, json
 from   datetime import datetime as dt
 from   sys import exit
 
@@ -18,7 +18,11 @@ parser.add_argument("-d", "--did",      type=str,               help="target DID
 
 parser.add_argument("-D", "--dataset",  type=str,               help="Dataset name",        default=None)
 parser.add_argument("-L", "--lifetime", type=int,               help="Dataset lifetime",    default=None)
-parser.add_argument("-M", "--metadata", action='store_true',    help="Get metadata of the dataset", default=False)
+
+parser.add_argument("-J", "--kv",       type=str,               help="Keys/Values to set",        default=None)
+
+parser.add_argument("-G", "--getmetadata", action='store_true', help="Get metadata", default=False)
+parser.add_argument("-S", "--setmetadata", action='store_true', help="Set metadata", default=False)
 
 parser.add_argument("-l", "--lfn",      type=str,               help="lfn", default=None)
 
@@ -31,7 +35,11 @@ rse         = args.rse
 did         = args.did
 
 dataset     = args.dataset
-metadata    = args.metadata
+
+getmetadata = args.getmetadata
+setmetadata = args.setmetadata
+kv          = args.kv
+
 lifetime    = args.lifetime
 lfn         = args.lfn
 
@@ -81,7 +89,7 @@ did_client = DIDClient()
 
 if dataset:
     if verbose: print(f'*** Dataset operation requested: {dataset} ***')
-    if metadata:
+    if getmetadata:
         if verbose: print(f'''*** Attempting to fetch the metadata for scope/dataset: {scope}:{dataset} ***''')
         dataset_manager = DatasetManager()
         meta = dataset_manager.get_dataset_metadata(f'''{scope}:{dataset}''')
@@ -97,7 +105,21 @@ if dataset:
         else:
             if verbose: print(f'*** Failed to get metadata for the dataset {scope}:{dataset}, exiting... ***')
             exit(-1)
+        exit(0)
+    elif setmetadata:
+        if kv is None:
+            print('*** No key/value pairs provided for setting metadata, exiting... ***')
+            exit(-1)
+        try:
+            kv_dict = json.loads(kv)
+        except json.JSONDecodeError as e:
+            print(f'*** Failed to parse the key/value pairs: {e}, exiting... ***')
+            exit(-1)
 
+        if verbose: print(f'''*** Setting the metadata for scope/dataset: {scope}:{dataset} to {kv_dict} ***''')
+        for k, v in kv_dict.items():
+            if verbose: print(f'''*** Setting the metadata key: {k} to value: {v} ***''')
+            did_client.set_metadata(scope=scope, name=dataset, key=k, value=v)
         exit(0)
     elif lifetime:
         if verbose: print(f'''*** Setting the lifetime for scope/dataset: {scope}:{dataset} to {lifetime} days ***''')
