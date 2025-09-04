@@ -14,7 +14,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 
 parser.add_argument("-r", "--rse",      type=str,               help="RSE",                 default='BNL_PROD_DISK_1')
-parser.add_argument("-d", "--did",      type=str,               help="target DID",          default='')
+parser.add_argument("-d", "--did",      type=str,               help="target DID",          default=None)
 
 parser.add_argument("-D", "--dataset",  type=str,               help="Dataset name",        default=None)
 parser.add_argument("-L", "--lifetime", type=int,               help="Dataset lifetime",    default=None)
@@ -127,9 +127,47 @@ if dataset:
         exit(0)
 
 else:
-    if did == '':
-        print('*** No DID specified, exiting... ***')
-        exit(-1)
+    if did:
+        if verbose: print(f'*** DID operation requested: {did} ***')
+        if getmetadata:
+            if verbose: print(f'''*** Attempting to fetch the metadata for scope/did: {scope}:{did} ***''')
+            try:
+                meta = did_client.get_metadata(scope=scope, name=did)
+            except Exception as e:
+                print(f'*** Failed to get metadata for the DID {scope}:{did}: {e}, exiting... ***')
+                exit(-1)
+
+            if meta:
+                if verbose:
+                    print(f'*** Metadata for the DID {scope}:{did}: ***')
+                    sorted_dict = dict(sorted(meta.items()))
+                    # print(sorted_dict)
+                    for k, v in sorted_dict.items():
+                        print(f"{k:<15}{v}")
+                        # print(f'    {k}: {v}')
+                    
+            else:
+                if verbose: print(f'*** No metadata found for the DID {scope}:{did}, exiting... ***')
+                exit(-1)
+            exit(0)
+        elif setmetadata:
+            if kv is None:
+                print('*** No key/value pairs provided for setting metadata, exiting... ***')
+                exit(-1)
+            try:
+                kv_dict = json.loads(kv)
+            except json.JSONDecodeError as e:
+                print(f'*** Failed to parse the key/value pairs: {e}, exiting... ***')
+                exit(-1)
+
+            if verbose: print(f'''*** Setting the metadata for scope/did: {scope}:{did} to {kv_dict} ***''')
+            for k, v in kv_dict.items():
+                if verbose: print(f'''*** Setting the metadata key: {k} to value: {v} ***''')
+                did_client.set_metadata(scope=scope, name=did, key=k, value=v)
+            exit(0)
+        else:
+            print('*** No operation specified for the DID, exiting... ***')
+        exit(0)
 
     if path == '':
         print('*** No path specified, exiting... ***')
