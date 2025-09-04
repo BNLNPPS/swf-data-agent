@@ -22,6 +22,8 @@ to move data. The transport layer for the FTS is **XRootD**.
 
 ## Rucio
 
+### The Client
+
 Useful information for setting up the components such as Rucio can be found in the
 [Startup Guide for NP PanDA & Rucio at BNL](https://docs.google.com/document/d/1zxtpDb44yNmd3qMW6CS7bXCtqZk-li2gPwIwnBfMNNI/edit?tab=t.0).
 
@@ -37,35 +39,50 @@ Quick summary:
 
 Useful examples can be found on the official [Rucio documentation pages](https://rucio.github.io/documentation/user/using_the_client).
 
-The example below lists the available RSEs:
+Currently, this mode of authorization is used:
 ```bash
-$ rucio list-rses
-BNL_PROD_DISK_1
-BNL_TEST_TAPE
-DAQ_DISK_1
-E1_BNL_DISK_1
-E1_JLAB_DISK_1
-JLAB_DISK_1
+voms-proxy-init --cert ./mycert.pem --key ./mykey.pem
 ```
 
+### Client - examples
 
-More examples:
+The example below lists the available RSEs:
 ```bash
+
 rucio --help # a useful CLI help is available
 rucio add-dataset user.potekhin:test # add dataset
 rucio upload --rse BNL_PROD_DISK_1 --scope user.potekhin ./README.md # upload to a storage endpoint
 rucio download user.potekhin:user.potekhin.74311a67-6e47-467d-b44a-244eac13c8be.log # download a container
 rucio list-dids --filter 'type=FILE' user.potekhin:*
+
 # This needs to be used prior to deleting rules, if unsure -
 rucio list-rules --account my_account
+
 # get useful info about an item:
 rucio list-file-replicas user.potekhin:t1.txt
+
 # Will erase a dataset after the 24hrs grace period, is irreversible.
 rucio erase user.potekhin:mydataset
+
 # List contents of a dataset:
 rucio list-content group.daq:swf1
+
+# RSE report
+rucio list-rses
 ```
 
+### Current RSEs
+BNL_PROD_DISK_1
+BNL_TEST_TAPE
+DAQ_DISK_1
+DAQ_DISK_3
+E1_BNL_DISK_1
+E1_JLAB_DISK_1
+JLAB_DISK_1
+
+
+
+### Deletion
 The way to delete files in Rucio is to delete associated rules.
 
 ```bash
@@ -74,9 +91,7 @@ rucio update-rule 680886366a584dcfb79b79c3f47af12d   --lifetime -1
 # NB. The change won't be instantaneous.
 ```
 
-Currently the CLI commands need to be run with the local Rucio imports deactivated, because
-of the clash with the global ATLAS-based setup.
-
+### Testbed scripts, interface with Rucio
 
 For running tests and other Python functions which depend on the common SWF packages, please use a setting
 similar to this one:
@@ -84,13 +99,11 @@ similar to this one:
 ```bash
 export RUCIO_COMMS_PATH=/eic/u/eicmax/testbed/swf-common-lib/
 ```
-And,
-```bash
-voms-proxy-init --cert ./mycert.pem --key ./mykey.pem
-```
+
+See the _voms-proxy-init_ comment above.
 
 
-## Rules
+### Subscription Rules
 
 ```bash
 eicmax@pandaserver02:~ $ rucio-admin subscription add  --account swf --priority 1 testsub   '{"pattern": "swf*", "did_type": ["DATASET"], "scope": ["group.daq"]}'   '[{"copies": 2, "rse_expression": "E1_BNL_DISK_1|E1_JLAB_DISK_1", "activity": "T0 Export", "grouping": "DATASET"}]' 'Test of teh SWF system'
