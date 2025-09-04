@@ -13,17 +13,14 @@ and manages Rucio STF subscriptions in general.
 * It sends messages to the _swf-processing-agent_ for data processing and
 to the _swf-fastmon-agent_ to signal new STF availability.
 * It will eventually also have a 'watcher' role to identify and report stalls or anomalies.
-
-## Data Transport
-
-The agent does not normally actuates the data transfer by itself. It instead
+* The agent does not actuate the data transfer by itself. It instead
 relies on Rucio for that function, and Rucio in turn operates the **FTS** system
-to move data. The transport layer for the FTS is **XRootD**.
+to move data. As en example, all modes of replication of the data to multiple RSEs depend
+on the FTS operability. More information of Rucio is presented below.
 
 ## Rucio
 
-### The Client
-
+### The Client - setup
 Useful information for setting up the components such as Rucio can be found in the
 [Startup Guide for NP PanDA & Rucio at BNL](https://docs.google.com/document/d/1zxtpDb44yNmd3qMW6CS7bXCtqZk-li2gPwIwnBfMNNI/edit?tab=t.0).
 
@@ -44,7 +41,7 @@ Currently, this mode of authorization is used:
 voms-proxy-init --cert ./mycert.pem --key ./mykey.pem
 ```
 
-### Client - examples
+### The client - examples
 
 The example below lists the available RSEs:
 ```bash
@@ -106,8 +103,21 @@ See the _voms-proxy-init_ comment above.
 ### Subscription Rules
 
 ```bash
+# Create a subscription
 eicmax@pandaserver02:~ $ rucio-admin subscription add  --account swf --priority 1 testsub   '{"pattern": "swf*", "did_type": ["DATASET"], "scope": ["group.daq"]}'   '[{"copies": 2, "rse_expression": "E1_BNL_DISK_1|E1_JLAB_DISK_1", "activity": "T0 Export", "grouping": "DATASET"}]' 'Test of teh SWF system'
 Subscription added b9bb14d2ebff463581c64a16546c245b
+
+# List subscriptions
+eicmax@pandaserver02:~/testbed/swf-data-agent (main)$ rucio-admin subscription list --account=swf
+swf: swf_daq_to_E1s_for_STF INACTIVE
+  priority: 1
+  filter: {"pattern": "swf_daq_test_STF_dataset*", "did_type": ["DATASET"], "scope": ["group.daq"]}
+  rules: [{"copies": 2, "rse_expression": "E1_BNL_DISK_1|E1_JLAB_DISK_1", "activity": "T0 Export", "grouping": "DATASET"}]
+  comments: Replicate all swf_daq_test_dataset* to RSE_B and RSE_C for user.yourusername
+swf: testsub UPDATED
+  priority: 1
+  filter: {"pattern": "swf*", "did_type": ["DATASET"], "scope": ["group.daq"]}
+  rules: [{"copies": 2, "rse_expression": "E1_BNL_DISK_1|E1_JLAB_DISK_1", "activity": "T0 Export", "grouping": "DATASET"}]
 
 ```
 
