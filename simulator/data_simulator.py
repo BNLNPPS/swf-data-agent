@@ -14,20 +14,23 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
-parser.add_argument("-s", "--scope",    type=str,               help="scope", default='group.daq')
-parser.add_argument("-d", "--datadir",  type=str,               help="Data Container (folder), in which to create run folders", default='/tmp')
+parser.add_argument("-s", "--scope",    type=str,               help="Rucio scope for the data", default='group.daq')
+parser.add_argument("-d", "--datadir",  type=str,               help="Data folder, from which to upload data", default='/tmp')
+parser.add_argument("-r", "--rse",      type=str,               help="RSE to target for upload", default='DAQ_DISK_3')
+
 
 args        = parser.parse_args()
 verbose     = args.verbose
 envtest     = args.envtest
 scope       = args.scope
 datadir     = args.datadir
+rse         = args.rse
 
 if verbose:
     print(f'''*** Verbose mode is set to {verbose} ***''')
     print(f'''*** Rucio scope is set to {scope} ***''')
     print(f'''*** Data container (folder) is set to {datadir} ***''')
-
+    print(f'''*** RSE to target for upload is set to {rse} ***''')
 # ---
 DATASIM_PATH        = ''
 
@@ -83,7 +86,7 @@ if envtest:
 
 # ---
 
-data = DATA(verbose=verbose, rucio_scope=scope, data_container=datadir)
+data = DATA(verbose=verbose, rucio_scope=scope, data_container=datadir, rse=rse)
 
 data.run()
 
