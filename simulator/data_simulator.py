@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
+parser.add_argument("-t", "--tst",      action='store_true',    help="Test mode")
 parser.add_argument("-s", "--scope",    type=str,               help="Rucio scope for the data", default='group.daq')
 parser.add_argument("-d", "--datadir",  type=str,               help="Data folder, from which to upload data", default='/tmp')
 parser.add_argument("-r", "--rse",      type=str,               help="RSE to target for upload", default='DAQ_DISK_3')
@@ -25,6 +26,7 @@ envtest     = args.envtest
 scope       = args.scope
 datadir     = args.datadir
 rse         = args.rse
+tst         = args.tst
 
 if verbose:
     print(f'''*** Verbose mode is set to {verbose} ***''')
