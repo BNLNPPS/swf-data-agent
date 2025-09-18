@@ -2,7 +2,7 @@
 
 #############################################
 '''
-This is a driver script for the data simulator.
+This is the driver script for the data simulator.
 It initializes the DATA class and starts the data management process.
 '''
 
