@@ -145,6 +145,12 @@ xrdcp root://pandaserver02.sdcc.bnl.gov:1094//data/DAQbuffer/test.txt .
 
 # Checking the file in the working area
 xrdfs root://dcintdoor.sdcc.bnl.gov:1094//pnfs ls -l /pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_bnl/group/daq/1d/49/myout.txt
+
+# Checking a folder
+xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ ls /pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest
+
+# Creating a folder
+xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ mkdir /pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/run1
 ```
 
 ### Rucio Storage Element organization (including the XRootD door access)
