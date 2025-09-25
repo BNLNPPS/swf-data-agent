@@ -46,9 +46,20 @@ print(f'*** Verbose mode is set to {verbose} ***')
 
 from XRootD import client
 
-myclient = client.FileSystem('root://dcintdoor.sdcc.bnl.gov:1094/')
-status = myclient.copy('/eic/u/eicmax/testbed/swf-data-agent/test/README.md', '/pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/', force=True)
+fs = client.FileSystem('root://dcintdoor.sdcc.bnl.gov:1094/')
+
+status, entries = fs.dirlist("/pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest")
+
+if status.ok:
+    for entry in entries:
+        print(f"Name: {entry}")
+else:
+    print(f"Error listing directory: {status.message}")
+
+status = fs.copy('file:///eic/u/eicmax/testbed/swf-data-agent/test/README.md', 'root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/potekhintest/dir1/f', force=False)
 print(status)
+
+# fs.mkdir('/pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/potekhintest/dir1')
 
 exit(0)
 
