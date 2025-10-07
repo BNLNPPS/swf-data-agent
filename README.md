@@ -142,6 +142,8 @@ service xrootd@standalone status # check status
 
 # Test copying to the client's folder:
 xrdcp root://pandaserver02.sdcc.bnl.gov:1094//data/DAQbuffer/test.txt .
+# Another example, more relevant for RSE operations
+xrdcp root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/potekhintest/dir1/f .
 
 # Checking the file in the working area
 xrdfs root://dcintdoor.sdcc.bnl.gov:1094//pnfs ls -l /pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_bnl/group/daq/1d/49/myout.txt
@@ -161,3 +163,6 @@ xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ mkdir /pnfs/sdcc.bnl.gov/eic/epic/disk
 and PanDA will read task input datasets from them, and save output to them as well.  
    * E1_BNL_DISK_1, root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_bnl/
    * E1_JLAB_DISK_1, root://dcintdoor.sdcc.bnl.gov:1094//pnfs/sdcc.bnl.gov/eic/epic/disk/swf_test_jlab/
+
+As the above information suggests, for the testnbed purposes the E1 RSEs are mapped on two separate folders
+in the same file system.

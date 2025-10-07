@@ -29,10 +29,10 @@ rse         = args.rse
 tst         = args.tst
 
 if verbose:
-    print(f'''*** Verbose mode is set to {verbose} ***''')
-    print(f'''*** Rucio scope is set to {scope} ***''')
-    print(f'''*** Data container (folder) is set to {datadir} ***''')
-    print(f'''*** RSE to target for upload is set to {rse} ***''')
+    print(f'''*** {'Verbose mode ':<30} {verbose:>20} ***''')
+    print(f'''*** {'Rucio scope ':<30} {scope:>20} ***''')
+    print(f'''*** {'Data container (folder) ':<30} {datadir:>20} ***''')
+    print(f'''*** {'RSE to target for upload ':<30} {rse:>20} ***''')
 # ---
 DATASIM_PATH        = ''
 
