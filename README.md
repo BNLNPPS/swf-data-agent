@@ -68,6 +68,15 @@ rucio list-content group.daq:swf1
 rucio list-rses
 ```
 
+For cleanup, one may use the "erase" command with the Rucio CLI client. Since
+the client does not accept wildcards for this operation, cleanup of multiple
+files can be accomplished with Linux filters e.g.
+
+```bash
+rucio erase `rucio list-dids --filter 'type=FILE' group.daq:*.stf | cut -f2 -d' ' | grep group`
+```
+
+
 ### Current RSEs
 * BNL_PROD_DISK_1
 * BNL_TEST_TAPE
