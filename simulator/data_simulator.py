@@ -14,10 +14,10 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
-parser.add_argument("-t", "--tst",      action='store_true',    help="Test mode")
-parser.add_argument("-s", "--scope",    type=str,               help="Rucio scope for the data", default='group.daq')
-parser.add_argument("-d", "--datadir",  type=str,               help="Data folder, from which to upload data", default='/tmp')
-parser.add_argument("-r", "--rse",      type=str,               help="RSE to target for upload", default='DAQ_DISK_3')
+parser.add_argument("-x", "--xrdup",    action='store_true',    help="XRootD upload, instead of Rucio",         default=False)
+parser.add_argument("-s", "--scope",    type=str,               help="Rucio scope for the data",                default='group.daq')
+parser.add_argument("-d", "--datadir",  type=str,               help="Data folder, from which to upload data",  default='/tmp')
+parser.add_argument("-r", "--rse",      type=str,               help="RSE to target for upload",                default='DAQ_DISK_3')
 
 
 args        = parser.parse_args()
@@ -26,13 +26,14 @@ envtest     = args.envtest
 scope       = args.scope
 datadir     = args.datadir
 rse         = args.rse
-tst         = args.tst
+xrdup       = args.xrdup
 
 if verbose:
-    print(f'''*** {'Verbose mode ':<30} {verbose:>20} ***''')
-    print(f'''*** {'Rucio scope ':<30} {scope:>20} ***''')
-    print(f'''*** {'Data container (folder) ':<30} {datadir:>20} ***''')
-    print(f'''*** {'RSE to target for upload ':<30} {rse:>20} ***''')
+    print(f'''*** {'Verbose mode            ':<20} {verbose:>20} ***''')
+    print(f'''*** {'XRootD mode             ':<20} {xrdup:>20} ***''')
+    print(f'''*** {'Rucio scope             ':<20} {scope:>20} ***''')
+    print(f'''*** {'Data container (folder) ':<20} {datadir:>20} ***''')
+    print(f'''*** {'RSE for upload          ':<20} {rse:>20} ***''')
 # ---
 DATASIM_PATH        = ''
 
@@ -88,7 +89,7 @@ if envtest:
 
 # ---
 
-data = DATA(verbose=verbose, rucio_scope=scope, data_folder=datadir, rse=rse)
+data = DATA(verbose=verbose, xrdup=xrdup, rucio_scope=scope, data_folder=datadir, rse=rse)
 
 data.run()
 
