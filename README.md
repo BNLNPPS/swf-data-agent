@@ -162,6 +162,10 @@ xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ ls /pnfs/sdcc.bnl.gov/eic/epic/disk/sw
 
 # Creating a folder
 xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ mkdir /pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/run1
+
+# Since 'rm' doesn't support wildcards, one needs to script removal of multiple files:
+xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ rm `xrdfs root://dcintdoor.sdcc.bnl.gov:1094/ ls /pnfs/sdcc.bnl.gov/eic/epic/disk/swfdaqtest/ | grep stf`
+
 ```
 
 ### Rucio Storage Element organization (including the XRootD door access)

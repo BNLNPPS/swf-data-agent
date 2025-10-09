@@ -87,6 +87,7 @@ if envtest:
     print('*** Environment variables have been tested, exiting... ***')
     exit(0)
 
+
 # ---
 
 data = DATA(verbose=verbose, xrdup=xrdup, rucio_scope=scope, data_folder=datadir, rse=rse)

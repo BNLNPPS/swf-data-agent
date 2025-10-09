@@ -47,7 +47,7 @@ def calculate_adler32_from_file(file_path, chunk_size=4096):
 
     try:
         with open(file_path, 'rb') as f:
-            print(f"Calculating Adler-32 checksum for file: {file_path}")
+            # print(f"Calculating Adler-32 checksum for file: {file_path}")
             while True:
                 chunk = f.read(chunk_size)
                 if not chunk:
