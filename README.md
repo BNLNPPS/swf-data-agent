@@ -175,3 +175,13 @@ and PanDA will read task input datasets from them, and save output to them as we
 
 As the above information suggests, for the testnbed purposes the E1 RSEs are mapped on two separate folders
 in the same file system.
+
+### Examples of CLI Rucio interaction
+```bash
+ rucio list-dids --filter 'type=DATASET' group.daq:*
+ rucio list-content group.daq:swf.100958.run
+ rucio list-dataset-replicas group.daq:swf.100958.run
+ rucio list-rules group.daq:swf.100958.run
+ rucio list-dataset-replicas group.daq:swf.100958.run
+ ```
+ 
