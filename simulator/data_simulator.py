@@ -90,7 +90,7 @@ if envtest:
 
 # ---
 
-data = DATA(verbose=verbose, xrdup=xrdup, rucio_scope=scope, data_folder=datadir, rse=rse)
+data = DATA(verbose=verbose, mqxmit=True, xrdup=xrdup, rucio_scope=scope, data_folder=datadir, rse=rse)
 
 data.run()
 
