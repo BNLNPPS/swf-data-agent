@@ -15,6 +15,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbose",  action='store_true',    help="Verbose mode")
 parser.add_argument("-e", "--envtest",  action='store_true',    help="Test the environment variables and exit", default=False)
 parser.add_argument("-x", "--xrdup",    action='store_true',    help="XRootD upload, instead of Rucio",         default=False)
+parser.add_argument("-m", "--mqxmit",   action='store_true',    help="Transmit MQ messages, default to yes",    default=False)
 parser.add_argument("-s", "--scope",    type=str,               help="Rucio scope for the data",                default='group.daq')
 parser.add_argument("-d", "--datadir",  type=str,               help="Data folder, from which to upload data",  default='/tmp')
 parser.add_argument("-r", "--rse",      type=str,               help="RSE to target for upload",                default='DAQ_DISK_3')
@@ -27,6 +28,7 @@ scope       = args.scope
 datadir     = args.datadir
 rse         = args.rse
 xrdup       = args.xrdup
+mqxmit      = args.mqxmit
 
 if verbose:
     print(f'''*** {'Verbose mode            ':<20} {verbose:>20} ***''')
@@ -90,7 +92,7 @@ if envtest:
 
 # ---
 
-data = DATA(verbose=verbose, mqxmit=True, xrdup=xrdup, rucio_scope=scope, data_folder=datadir, rse=rse)
+data = DATA(verbose=verbose, mqxmit=mqxmit, xrdup=xrdup, rucio_scope=scope, data_folder=datadir, rse=rse)
 
 data.run()
 
