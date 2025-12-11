@@ -25,6 +25,11 @@ are placeholders.
 * The file is attached to the dataset after _it is uploaded to Rucio._
 * The file is registered under the provided Rucio scope, and its metadata is set upon registration.
 
+## "Data Ready"
+
+In the current setup, the "data_ready" message is sent out when there is at least one file
+already in the dataset.
+
 
 ## Upload
 
